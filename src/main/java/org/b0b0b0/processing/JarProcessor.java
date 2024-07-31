@@ -32,7 +32,6 @@ public class JarProcessor {
         }
 
         if (isNewDirectory) {
-            // Если папка только что создана, ждем добавления файлов
             return;
         }
 
@@ -51,7 +50,6 @@ public class JarProcessor {
             File outputJar = new File(outputDirectory, outputFileName);
             int counter = 1;
 
-            // Проверяем, существует ли файл с таким именем, и уникализируем его
             while (outputJar.exists()) {
                 String newFileName = jarFile.getName().replace(".jar", "") + "_" + counter + ".jar";
                 outputJar = new File(outputDirectory, newFileName);

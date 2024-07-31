@@ -1,11 +1,14 @@
 package org.b0b0b0.processing;
+
 import org.yaml.snakeyaml.Yaml;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+
 public class ConfigLoader {
 
     private static final String CONFIG_FILE_NAME = "config.yml";
@@ -21,6 +24,7 @@ public class ConfigLoader {
             if (!CONFIG_FILE.exists()) {
                 extractConfigFile();
             }
+
             try (InputStream inputStream = new FileInputStream(CONFIG_FILE)) {
                 Yaml yaml = new Yaml();
                 config = yaml.load(inputStream);
@@ -56,8 +60,20 @@ public class ConfigLoader {
         return ((Map<String, String>) config.get("field")).get("value");
     }
 
+    public static boolean isFieldEnabled() {
+        return (boolean) ((Map<String, Object>) config.get("field")).get("enabled");
+    }
+
+    public static boolean isCommentEnabled() {
+        return (boolean) config.get("commentEnabled");
+    }
+
     public static String getComment() {
         return (String) config.get("comment");
+    }
+
+    public static boolean isDetailedCommentEnabled() {
+        return (boolean) config.get("detailedCommentEnabled");
     }
 
     public static String getDetailedComment() {
@@ -72,5 +88,9 @@ public class ConfigLoader {
     @SuppressWarnings("unchecked")
     public static String getBMFieldValue() {
         return ((Map<String, String>) config.get("bmField")).get("value");
+    }
+
+    public static boolean isBMFieldEnabled() {
+        return (boolean) ((Map<String, Object>) config.get("bmField")).get("enabled");
     }
 }

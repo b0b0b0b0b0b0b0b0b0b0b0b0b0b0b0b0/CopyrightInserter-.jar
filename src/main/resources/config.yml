@@ -1,12 +1,17 @@
+# Конфигурация для добавления поля в классы Java
 field:
-  name: "BLACK_MINECRAFT"
-  value: "black-minecraft.com"
+  name: "BLACK_MINECRAFT" # Имя добавляемого поля
+  value: "black-minecraft.com" # Значение добавляемого поля
+  enabled: true # Включает или отключает добавление поля в классы
 
+# Конфигурация для добавления комментариев в YAML файлы
 comment: |
   #
   # Black-Minecraft
   #
+commentEnabled: true # Включает или отключает добавление комментариев в YAML файлы
 
+# Детализированный комментарий для добавления в ZIP-архив
 detailedComment: |
   ################################# B M #################################
                     ___                  _
@@ -25,7 +30,10 @@ detailedComment: |
     ################################# B M #################################
 
                           BLACK-MINECRAFT.COM
+detailedCommentEnabled: true # Включает или отключает добавление детализированного комментария в ZIP-архив
 
+# Конфигурация для добавления поля в JSON файлы
 bmField:
-  name: "BM"
-  value: "Black-Minecraft.comI"
+  name: "BM" # Имя добавляемого поля в JSON файлы
+  value: "Black-Minecraft.com" # Значение добавляемого поля в JSON файлы
+  enabled: true # Включает или отключает добавление поля в JSON файлы
