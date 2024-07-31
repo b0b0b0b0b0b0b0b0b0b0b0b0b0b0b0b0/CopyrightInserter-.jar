@@ -22,3 +22,43 @@
 - Java 21 или новее
 - Maven для сборки проекта
 
+## Сборка и установка
+Склонируйте репозиторий:
+
+```bash
+   git clone https://github.com/b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0/CopyrightInserter-.jar/
+   ```
+
+
+Соберите проект с использованием Maven:
+
+
+```bash
+mvn clean package
+   ```
+
+## Запуск с указанием версии java:
+```bash
+@echo off
+set JAVA_PATH="C:\Program Files\Eclipse Adoptium\jdk-21.0.3.9-hotspot\bin\java.exe"
+set JAR_NAME=CopyrightInserter
+
+for %%f in (*%JAR_NAME%*.jar) do (
+    echo start %%f...
+    %JAVA_PATH% -jar "%%f"
+    echo.
+)
+pause
+   ```
+## Запуск без указанием версии java:
+```bash
+@echo off
+set JAR_NAME=CopyrightInserter
+
+for %%f in ([I]%JAR_NAME%[/I].jar) do (
+    echo Запуск %%f...
+    java -jar "%%f"
+    echo.
+)
+pause
+   ```
