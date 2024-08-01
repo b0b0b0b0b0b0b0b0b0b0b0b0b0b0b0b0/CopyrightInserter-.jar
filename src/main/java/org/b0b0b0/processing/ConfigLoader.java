@@ -4,50 +4,55 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 public class ConfigLoader {
 
     private static final String CONFIG_FILE_NAME = "config.yml";
-    private static final File CONFIG_FILE = new File(CONFIG_FILE_NAME);
+    private static File configFile = new File(CONFIG_FILE_NAME);
     private static Map<String, Object> config;
+    private static boolean isConfigNewlyCreated = false;
 
     static {
+        isConfigNewlyCreated = ensureConfigFileExists();
         loadConfig();
     }
 
-    private static void loadConfig() {
-        try {
-            if (!CONFIG_FILE.exists()) {
-                extractConfigFile();
+    public static boolean ensureConfigFileExists() {
+        if (!configFile.exists()) {
+            try (InputStream resourceStream = ConfigLoader.class.getClassLoader().getResourceAsStream(CONFIG_FILE_NAME)) {
+                if (resourceStream == null) {
+                    throw new RuntimeException("Ресурсный файл конфигурации не найден в JAR: " + CONFIG_FILE_NAME);
+                }
+                Files.copy(resourceStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                return true; // Файл был создан
+            } catch (IOException e) {
+                throw new RuntimeException("Ошибка при создании конфигурационного файла", e);
             }
+        }
+        return false; // Файл уже существовал
+    }
 
-            try (InputStream inputStream = new FileInputStream(CONFIG_FILE)) {
-                Yaml yaml = new Yaml();
-                config = yaml.load(inputStream);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load configuration", e);
+    private static void loadConfig() {
+        try (InputStream inputStream = new FileInputStream(configFile)) {
+            Yaml yaml = new Yaml();
+            config = yaml.load(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при загрузке конфигурационного файла", e);
         }
     }
 
-    private static void extractConfigFile() {
-        try (InputStream inputStream = ConfigLoader.class.getResourceAsStream("/" + CONFIG_FILE_NAME);
-             OutputStream outputStream = new FileOutputStream(CONFIG_FILE)) {
-            if (inputStream == null) {
-                throw new RuntimeException("Configuration file not found in JAR.");
-            }
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to extract configuration file", e);
-        }
+    public static boolean isConfigNewlyCreated() {
+        return isConfigNewlyCreated;
+    }
+
+    public static void reloadConfig() {
+
+        loadConfig();
     }
 
     @SuppressWarnings("unchecked")

@@ -20,8 +20,10 @@ public class ClassProcessor {
     private static final int ACCESS = Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL;
 
     public static void processJar(File inputJar, File outputJar) throws IOException {
+        File uniqueOutputJar = getUniqueOutputFile(outputJar);
+
         try (JarFile jar = new JarFile(inputJar);
-             JarOutputStream tempJar = new JarOutputStream(new FileOutputStream(outputJar))) {
+             JarOutputStream tempJar = new JarOutputStream(new FileOutputStream(uniqueOutputJar))) {
 
             jar.stream().forEach(entry -> {
                 try {
@@ -61,5 +63,26 @@ public class ClassProcessor {
                 tempJar.setComment(CommentGenerator.generateComment());
             }
         }
+
+        System.out.println("Файл обработан: " + uniqueOutputJar.getName());
+    }
+
+    private static File getUniqueOutputFile(File outputJar) {
+        String originalName = outputJar.getName();
+        String baseName = originalName;
+        String extension = "";
+        int dotIndex = originalName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            baseName = originalName.substring(0, dotIndex);
+            extension = originalName.substring(dotIndex);
+        }
+
+        int counter = 1;
+        File uniqueFile = new File(outputJar.getParent(), counter + "_" + originalName);
+        while (uniqueFile.exists()) {
+            counter++;
+            uniqueFile = new File(outputJar.getParent(), counter + "_" + baseName + extension);
+        }
+        return uniqueFile;
     }
 }
