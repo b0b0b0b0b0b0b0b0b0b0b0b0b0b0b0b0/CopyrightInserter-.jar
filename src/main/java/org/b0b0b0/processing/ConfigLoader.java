@@ -29,12 +29,12 @@ public class ConfigLoader {
                     throw new RuntimeException("Ресурсный файл конфигурации не найден в JAR: " + CONFIG_FILE_NAME);
                 }
                 Files.copy(resourceStream, configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                return true; // Файл был создан
+                return true;
             } catch (IOException e) {
                 throw new RuntimeException("Ошибка при создании конфигурационного файла", e);
             }
         }
-        return false; // Файл уже существовал
+        return false;
     }
 
     private static void loadConfig() {
@@ -51,7 +51,6 @@ public class ConfigLoader {
     }
 
     public static void reloadConfig() {
-
         loadConfig();
     }
 
@@ -98,4 +97,29 @@ public class ConfigLoader {
     public static boolean isBMFieldEnabled() {
         return (boolean) ((Map<String, Object>) config.get("bmField")).get("enabled");
     }
+
+    public static boolean isAnnotationsEnabled() {
+        return (boolean) ((Map<String, Object>) config.get("annotations")).get("enabled");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static String getClassAnnotationName() {
+        return (String) ((Map<String, String>) ((Map<String, Object>) config.get("annotations")).get("classAnnotation")).get("name");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static String getClassAnnotationValue() {
+        return (String) ((Map<String, String>) ((Map<String, Object>) config.get("annotations")).get("classAnnotation")).get("value");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static String getFieldAnnotationName() {
+        return (String) ((Map<String, String>) ((Map<String, Object>) config.get("annotations")).get("fieldAnnotation")).get("name");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static String getFieldAnnotationValue() {
+        return (String) ((Map<String, String>) ((Map<String, Object>) config.get("annotations")).get("fieldAnnotation")).get("value");
+    }
+
 }

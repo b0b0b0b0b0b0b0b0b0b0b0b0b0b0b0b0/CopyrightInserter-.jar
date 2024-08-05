@@ -1,8 +1,6 @@
 package org.b0b0b0.processing;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.*;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 
@@ -32,15 +30,54 @@ public class ClassProcessor {
                         ClassNode classNode = new ClassNode();
                         classReader.accept(classNode, 0);
 
+                        // Добавляем статическое финальное поле
                         if (classNode.fields.stream().noneMatch(f -> f.name.equals(FIELD_NAME))) {
                             classNode.fields.add(new FieldNode(ACCESS, FIELD_NAME, "Ljava/lang/String;", null, FIELD_VALUE));
                         }
 
-                        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-                        classNode.accept(classWriter);
-                        byte[] modifiedClass = classWriter.toByteArray();
-                        tempJar.putNextEntry(new JarEntry(entry.getName()));
-                        tempJar.write(modifiedClass);
+                        // Проверяем, нужно ли добавлять аннотации
+                        if (ConfigLoader.isAnnotationsEnabled()) {
+                            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+                            ClassVisitor classVisitor = new ClassVisitor(Opcodes.ASM9, classWriter) {
+                                @Override
+                                public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+                                    super.visit(version, access, name, signature, superName, interfaces);
+
+                                    String classAnnotationName = ConfigLoader.getClassAnnotationName();
+                                    String classAnnotationValue = ConfigLoader.getClassAnnotationValue();
+
+                                    if (classAnnotationName != null && classAnnotationValue != null) {
+                                        AnnotationVisitor av = visitAnnotation("L" + classAnnotationName.replace('.', '/') + ";", true);
+                                        if (av != null) {
+                                            av.visit("value", classAnnotationValue);
+                                            av.visitEnd();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
+                                    FieldVisitor fv = super.visitField(access, name, descriptor, signature, value);
+
+                                    String fieldAnnotationName = ConfigLoader.getFieldAnnotationName();
+                                    String fieldAnnotationValue = ConfigLoader.getFieldAnnotationValue();
+
+                                    if (name.equals(FIELD_NAME) && fieldAnnotationName != null && fieldAnnotationValue != null) {
+                                        AnnotationVisitor av = fv.visitAnnotation("L" + fieldAnnotationName.replace('.', '/') + ";", true);
+                                        if (av != null) {
+                                            av.visit("info", fieldAnnotationValue);
+                                            av.visitEnd();
+                                        }
+                                    }
+                                    return fv;
+                                }
+                            };
+
+                            classNode.accept(classVisitor);
+                            byte[] modifiedClass = classWriter.toByteArray();
+                            tempJar.putNextEntry(new JarEntry(entry.getName()));
+                            tempJar.write(modifiedClass);
+                        }
                     } else if (!entry.getName().endsWith(".yml") && !entry.getName().endsWith(".json")) {
                         tempJar.putNextEntry(new JarEntry(entry.getName()));
                         tempJar.write(jar.getInputStream(entry).readAllBytes());
