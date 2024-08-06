@@ -1,11 +1,14 @@
 package org.b0b0b0.processing;
 
+import org.snakeyaml.engine.v2.api.Dump;
+import org.snakeyaml.engine.v2.api.DumpSettings;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.api.LoadSettings;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
@@ -39,8 +42,9 @@ public class ConfigLoader {
 
     private static void loadConfig() {
         try (InputStream inputStream = new FileInputStream(configFile)) {
-            Yaml yaml = new Yaml();
-            config = yaml.load(inputStream);
+            LoadSettings settings = LoadSettings.builder().build();
+            Load load = new Load(settings);
+            config = (Map<String, Object>) load.loadFromInputStream(inputStream);
         } catch (IOException e) {
             throw new RuntimeException("Ошибка при загрузке конфигурационного файла", e);
         }
@@ -122,4 +126,32 @@ public class ConfigLoader {
         return (String) ((Map<String, String>) ((Map<String, Object>) config.get("annotations")).get("fieldAnnotation")).get("value");
     }
 
+
+    public static void setLanguage(String language) {
+        config.put("language", language);
+        saveConfig();
+    }
+
+    private static void saveConfig() {
+        try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8)) {
+            DumperOptions options = new DumperOptions();
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            options.setPrettyFlow(true);
+            Yaml yaml = new Yaml(options);
+            yaml.dump(config, writer);
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при сохранении конфигурационного файла", e);
+        }
+    }
+
+    public static String getLanguage() {
+        return (String) config.getOrDefault("language", "ru");
+    }
+    @SuppressWarnings("unchecked")
+    public static String getMessage(String key) {
+        String language = getLanguage();
+        Map<String, Object> messages = (Map<String, Object>) config.get("messages");
+        Map<String, String> languageMessages = (Map<String, String>) messages.get(language);
+        return languageMessages.getOrDefault(key, "Сообщение не найдено: " + key);
+    }
 }

@@ -101,7 +101,7 @@ public class ClassProcessor {
             }
         }
 
-        System.out.println("Файл обработан: " + uniqueOutputJar.getName());
+        System.out.println(ConfigLoader.getMessage("file_processed") + uniqueOutputJar.getName());
     }
 
     private static File getUniqueOutputFile(File outputJar) {

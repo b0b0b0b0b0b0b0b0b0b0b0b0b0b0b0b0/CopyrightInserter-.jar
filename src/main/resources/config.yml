@@ -47,3 +47,129 @@ bmField:
   name: "BM" # Имя добавляемого поля в JSON файлы
   value: "Black-Minecraft.com" # Значение добавляемого поля в JSON файлы
   enabled: true # Включает или отключает добавление поля в JSON файлы
+
+language: "ru"
+# =======================================
+# Всё, что ниже, это переводы сообщений,
+# используемых в программе. Здесь
+# содержатся переводы для разных языков,
+# таких как русский и английский.
+# =======================================
+messages:
+  ru:
+    # Добавленные ключи
+    menu_prompt: "Пожалуйста, выберите действие:"
+    menu_option_1: "1 - Запустить обработку файлов в папке 'input'"
+    menu_option_2: "2 - Перезагрузка конфигурации"
+    menu_option_3: "3 - Показать список доступных JAR-файлов"
+    menu_option_4: "4 - Показать содержимое файла config.yml"
+    menu_option_5: "5 - Открыть папку 'input'"
+    menu_option_6: "6 - Открыть папку 'output'"
+    menu_option_7: "7 - Очистить папку 'output'"
+    menu_option_8: "8 - Обновить список файлов"
+    menu_option_9: "9 - Справка"
+    menu_option_10: "10 - Выход"
+    input_folder_empty: "Папка 'input' пуста. Пожалуйста, добавьте JAR-файлы для обработки."
+    input_folder_instructions: "Наш инструмент предназначен для автоматического добавления метаданных в ваши JAR-файлы."
+    input_folder_prompt: "Просто поместите нужные JAR-файлы в папку 'input', и мы сделаем всю работу за вас!"
+    input_folder_command_instructions: "После этого выберите опцию '1 - Запустить обработку файлов' для начала обработки."
+    reload_config_prompt: "Если вам нужно перезагрузить конфигурацию, выберите '2'."
+    reload_config: "Перезагружаю конфиг"
+    config_reloaded: "Конфиг перезагружен"
+    exit_instruction: "Для выхода из программы выберите '10'."
+    donor_file: "Донор файла: "
+    processing_error: "Ошибка при обработке файла: "
+    no_jar_files: "Нет JAR-файлов в папке 'input'."
+    available_jar_files: "Доступные JAR-файлы:"
+    config_content: "Содержимое файла config.yml:"
+    config_read_error: "Ошибка при чтении файла config.yml."
+    directory_opened: "Папка '%s' открыта."
+    directory_open_error: "Ошибка при открытии папки '%s'."
+    directory_not_found: "Папка '%s' не найдена."
+    file_deleted: "Удален файл: "
+    file_delete_failed: "Не удалось удалить файл: "
+    output_folder_not_found: "Папка 'output' не найдена."
+    config_created: "Файл config.yml был создан и позволяет настроить параметры обработки."
+    config_not_required: "Вы можете изменить его при необходимости, но это не обязательно."
+    start_processing: "Запуск автоматической обработки JAR-файлов из папки 'input'..."
+    help_message: |
+      Справка:
+      1 - Запустить обработку файлов в папке 'input': Начинает обработку JAR-файлов.
+      2 - Перезагрузка конфигурации: Перезагружает настройки из файла config.yml.
+      3 - Показать список доступных JAR-файлов: Отображает файлы в папке 'input'.
+      4 - Показать содержимое файла config.yml: Выводит настройки конфигурации.
+      5 - Открыть папку 'input': Открывает папку 'input' в проводнике.
+      6 - Открыть папку 'output': Открывает папку 'output' в проводнике.
+      7 - Очистить папку 'output': Удаляет все файлы из папки 'output'.
+      8 - Обновить список файлов: Обновляет список JAR-файлов в папке 'input'.
+      9 - Справка: Отображает это сообщение.
+      10 - Выход: Закрывает программу.
+    toggle_language: "Switch language to English"
+    language_changed: "Язык был изменён на русский."
+    unknown_command: "Неизвестная команда. Пожалуйста, выберите номер из меню."
+    processing_jars: "Запуск обработки JAR-файлов..."
+    file_processed: "Файл обработан: "
+    open_input_dir: "Открытие папки 'input'..."
+    open_output_dir: "Открытие папки 'output'..."
+    update_file_list: "Обновление списка файлов..."
+    show_help: "Отображение справки..."
+    clear_output_dir: "Очистка папки 'output'..."
+  en:
+    # Переводы на английский язык
+    menu_prompt: "Please choose an action:"
+    menu_option_1: "1 - Start processing files in the 'input' folder"
+    menu_option_2: "2 - Reload configuration"
+    menu_option_3: "3 - Show list of available JAR files"
+    menu_option_4: "4 - Show contents of the config.yml file"
+    menu_option_5: "5 - Open 'input' folder"
+    menu_option_6: "6 - Open 'output' folder"
+    menu_option_7: "7 - Clear 'output' folder"
+    menu_option_8: "8 - Update file list"
+    menu_option_9: "9 - Help"
+    menu_option_10: "10 - Exit"
+    input_folder_empty: "The 'input' folder is empty. Please add JAR files for processing."
+    input_folder_instructions: "Our tool is designed to automatically add metadata to your JAR files."
+    input_folder_prompt: "Simply place the desired JAR files in the 'input' folder, and we'll do the rest for you!"
+    input_folder_command_instructions: "After that, select option '1 - Start processing files' to begin processing."
+    reload_config_prompt: "If you need to reload the configuration, select '2'."
+    reload_config: "Reloading config"
+    config_reloaded: "Config reloaded"
+    exit_instruction: "To exit the program, select '10'."
+    donor_file: "Donor file: "
+    processing_error: "Error processing file: "
+    no_jar_files: "No JAR files in the 'input' folder."
+    available_jar_files: "Available JAR files:"
+    config_content: "Contents of config.yml:"
+    config_read_error: "Error reading config.yml file."
+    directory_opened: "Folder '%s' opened."
+    directory_open_error: "Error opening folder '%s'."
+    directory_not_found: "Folder '%s' not found."
+    file_deleted: "File deleted: "
+    file_delete_failed: "Failed to delete file: "
+    output_folder_not_found: "The 'output' folder was not found."
+    config_created: "The config.yml file has been created and allows you to configure the processing parameters."
+    start_processing: "Starting automatic processing of JAR files from the 'input' folder..."
+    config_not_required: "You can change it if necessary, but it's not required."
+    help_message: |
+      Help:
+      1 - Start processing files in the 'input' folder: Begins processing JAR files.
+      2 - Reload configuration: Reloads settings from the config.yml file.
+      3 - Show list of available JAR files: Displays files in the 'input' folder.
+      4 - Show contents of config.yml: Outputs configuration settings.
+      5 - Open 'input' folder: Opens the 'input' folder in the file explorer.
+      6 - Open 'output' folder: Opens the 'output' folder in the file explorer.
+      7 - Clear 'output' folder: Deletes all files in the 'output' folder.
+      8 - Update file list: Updates the list of JAR files in the 'input' folder.
+      9 - Help: Displays this message.
+      10 - Exit: Closes the program.
+    toggle_language: "Сменить язык на русский"
+    language_changed: "Language has been changed to English."
+    unknown_command: "Unknown command. Please choose a number from the menu."
+    processing_jars: "Starting JAR file processing..."
+    file_processed: "File processed: "
+    open_input_dir: "Opening 'input' folder..."
+    open_output_dir: "Opening 'output' folder..."
+    update_file_list: "Updating file list..."
+    show_help: "Displaying help..."
+    clear_output_dir: "Clearing 'output' folder..."
+
